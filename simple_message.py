@@ -1,6 +1,6 @@
 from dotenv import load_dotenv, get_key
 from langchain_openai import AzureChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.output_parsers import StrOutputParser
 
 load_dotenv()
 
@@ -14,11 +14,9 @@ llm = AzureChatOpenAI(
     temperature=0.1 # between 0 and 1, lower is more deterministic, higher is more creative
 )
 
-messages = [
-        SystemMessage(content="Translate to following from Turkish to English:"),
-        HumanMessage(content="Fransa'nın başkenti neresidir?")
-]
+parser = StrOutputParser()
 
-if __name__ == "__main__":
-    response = llm.invoke(messages)
-    print(response.content)
+chain = llm | parser
+
+def get_chain():
+    return chain
