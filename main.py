@@ -1,4 +1,4 @@
-from simple_message import get_chain
+from modelchain import get_chain
 from fastapi import FastAPI
 from langserve import add_routes
 
