@@ -1,6 +1,7 @@
 from dotenv import load_dotenv, get_key
 from langchain_openai import AzureChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 
 load_dotenv()
 
@@ -16,7 +17,14 @@ llm = AzureChatOpenAI(
 
 parser = StrOutputParser()
 
-chain = llm | parser
+prompt_template = ChatPromptTemplate.from_messages(
+    [
+        ("system", "Translate the following to {language}"),
+        ("human", "{text}")
+    ]
+)
+
+chain = prompt_template | llm | parser
 
 def get_chain():
     return chain
